@@ -4,33 +4,38 @@ using namespace std::chrono;
 
 uLCD_4DGL uLCD(D1, D0, D2); // serial tx, serial rx, reset pin;
 
+AnalogIn Ain(A0);
 AnalogOut  aout(PA_4);
 InterruptIn up(PB_1);
 InterruptIn down(PB_4);
 InterruptIn confirm(PA_3);
 EventQueue queue(64 * EVENTS_EVENT_SIZE);
 Timer debounce;                  //define debounce timer
+Timer t0;
 
 Thread t;
+float ADCdata[224];
 
 int flag = 0;
-int c = 0;
+int c = 1;
+int j = 0;
+int k = 0;
 
 void Freq_info() {
       uLCD.cls();
       uLCD.printf("\n Frequency is:\n");
       if (c == 0) {             // 100HZ
-            uLCD.printf("\n > 100Hz\n");
-            uLCD.printf("\n   200Hz\n");
-            uLCD.printf("\n   1000Hz\n");
+            uLCD.printf("\n > 50Hz\n");
+            uLCD.printf("\n   100Hz\n");
+            uLCD.printf("\n   500Hz\n");
       } else if (c == 1) {      // 200HZ
-            uLCD.printf("\n   100Hz\n");
-            uLCD.printf("\n > 200Hz\n");
-            uLCD.printf("\n   1000Hz\n");
+            uLCD.printf("\n   50Hz\n");
+            uLCD.printf("\n > 100Hz\n");
+            uLCD.printf("\n   500Hz\n");
       } else if (c == 2) {      // 1000HZ
+            uLCD.printf("\n   50Hz\n");
             uLCD.printf("\n   100Hz\n");
-            uLCD.printf("\n   200Hz\n");
-            uLCD.printf("\n > 1000Hz\n");
+            uLCD.printf("\n > 500Hz\n");
       }
 }
 
@@ -61,14 +66,14 @@ void Freq_down() {
 void Freq_conf() {
       if (duration_cast<milliseconds>(debounce.elapsed_time()).count() > 500) {
             flag = 1;
+            j = k = 0;
             queue.call(Freq_confirm);
             debounce.reset(); //restart timer when the toggle is performed
       }      
 }
 
 int main(void)
-{
-      //count = 0;
+{     
       t.start(callback(&queue, &EventQueue::dispatch_forever));
       debounce.start();
 
@@ -78,31 +83,40 @@ int main(void)
 
       while (1) {
             if ((c == 0) && flag) {
-                  for (float i = 0.0f; i < 0.9f; i += 0.018f) {
+                  for (float i = 0.0f; i < 3.0/3.3; i += 0.1f) {
                         aout = i;
-                        wait_us(1);
-                  }
-                 for (float i = 0.9f; i > 0.0f; i -= 0.002f) {
+                        wait_us(181);
+                        if (j == 201 || j == 202) ADCdata[k++] = Ain;
+                  } 
+                  for (float i = 3.0/3.3; i > 0.0f; i -= 0.009f) {
                         aout = i;
-                        wait_us(7);
+                        wait_us(162);
+                        if (j == 201 || j == 202) ADCdata[k++] = Ain;                        
                   }
             } else if ((c == 1) && flag) {
-                 for (float i = 0.0f; i < 0.9f; i += 0.036f) {
+                  for (float i = 0.0f; i < 3.0/3.3; i += 0.1f) {
                         aout = i;
-                        wait_us(7);
-                  }
-                 for (float i = 0.9f; i > 0.0f; i -= 0.0045f) {
+                        wait_us(40);
+                        if (j == 201 || j == 202) ADCdata[k++] = Ain;
+                  } 
+                  for (float i = 3.0/3.3; i > 0.0f; i -= 0.009f) {
                         aout = i;
-                        wait_ns(13000);
+                        wait_us(90);
+                        if (j == 201 || j == 202) ADCdata[k++] = Ain;                        
                   }
             } else if ((c == 2) && flag) {
-                  for (float i = 0.0f; i < 0.9f; i += 0.06f) {
-                      aout = i;
-                  }
-                  for (float i = 0.9f; i > 0.0f; i -= 0.0085f) {
+                  for (float i = 0.0f; i < 3.0/3.3; i += 0.1f) {
                         aout = i;
-                        wait_ns(1);
+                        wait_us(2);
+                        if (j == 201 || j == 202) ADCdata[k++] = Ain;
+                  } 
+                  for (float i = 3.0/3.3; i > 0.0f; i -= 0.009f) {
+                        aout = i;
+                        wait_us(4);
+                        if (j == 201 || j == 202) ADCdata[k++] = Ain;                        
                   }
             }
+            if (j == 202 && flag) for (int k = 0; k < 224; k++) printf("%f\r\n", ADCdata[k]);
+            j++;
       }
 }
