@@ -25,11 +25,11 @@ Analyze the captured waveform: show frequency response and wave on screen with M
 
 The result is as following:
 ### 50Hz :
-
+![image](https://github.com/107061105/HW2/blob/master/Figure_0.png)
 ### 100Hz :
-
+![image](https://github.com/107061105/HW2/blob/master/Figure_1.png)
 ### 500Hz :
+![image](https://github.com/107061105/HW2/blob/master/Figure_2.png)
 
-
-
+As above pictures can see, comparing to the signal of 50Hz and the signal of 100Hz, the signal of 500Hz is filtered by RC filter. The frequency component after 360Hz is relatively reduce. 
 
