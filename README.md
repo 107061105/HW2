@@ -22,3 +22,9 @@ Sample the generated wave form and send the value to PC/Python. In this assignme
 Analyze the captured waveform: show frequency response and wave on screen with Matplotlib.
 
 ## III. Result
+
+The result is as following:
+### 50Hz :
+### 100Hz :
+### 500Hz :
+
