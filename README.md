@@ -25,6 +25,11 @@ Analyze the captured waveform: show frequency response and wave on screen with M
 
 The result is as following:
 ### 50Hz :
+
 ### 100Hz :
+
 ### 500Hz :
+
+
+
 
