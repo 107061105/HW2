@@ -9,15 +9,15 @@ In this assignment, we will gengerate triangle waves, then send it to the picosc
 We need to contain following
 
 ### 1.Inputs
-Add buttons on the bread board (as DigitalIn): up, down and select.
+Add buttons on the bread board (as DigitalIn): up, down and select. In this assignment, we can select three different frequecies: 50Hz, 100Hz and 500Hz.
 ### 2.Display
-Create a selection display on uLCD to select from a few frequencies by your choice, e.g., 100Hz, 200Hz, etc.
+When we implement this program, we will show three of frequencies as a menu in uLCD.
 ### 3.Generate waveform 
-Use DAC to generate a wave form with the chosen frequency and pass the generated signal through a RC low pass filter.
+Use DAC to generate a wave form with the chosen frequency and pass the generated signal through a RC low pass filter. In this assignment, we use a RC filter with a pole of 360Hz as a low pass filter.
 ### 4.Measure
-Use Picoscope to measure the generated wave form.
+Use Picoscope to measure the generated wave form, and use measure function to verify signal.
 ### 5.Sample
-Sample the generated wave form and send the value to PC/Python.
+Sample the generated wave form and send the value to PC/Python. In this assignment, sampling rate is 200 * 50 = 10k for 50Hz, 200 * 100 = 20k for 100Hz, 200 * 500 = 200k for 500Hz.
 ### 6.Analysis
 Analyze the captured waveform: show frequency response and wave on screen with Matplotlib.
 
